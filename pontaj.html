@@ -14,10 +14,9 @@
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
 
-        const formURL =
-          "https://docs.google.com/forms/d/e/1FAIpQLSc8NdMgB3Jwb_8G0kHgP6htwXkWhCblJTvzNN9UnB1tPdDCPA/viewform?usp=pp_url" +
-          "&entry.1060216242=" + encodeURIComponent(lat) +
-          "&entry.1189487855=" + encodeURIComponent(lng);
+        const formURL = "https://docs.google.com/forms/d/e/1FAIpQLSc8NdMgB3Jwb_8G0kHgP6htwXkWhCblJTvzNN9UnB1tPdDCPA/viewform?usp=pp_url"
+          + "&entry.1355780328=" + encodeURIComponent(lat)  // latitudine
+          + "&entry.595165469=" + encodeURIComponent(lng); // longitudine
 
         window.location.href = formURL;
       },
