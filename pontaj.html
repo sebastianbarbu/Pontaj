@@ -23,20 +23,19 @@
       max-width: 400px;
       text-align: center;
     }
-    input {
+    input, button {
       width: 100%;
       padding: 0.75rem;
       margin: 0.5rem 0;
-      border: 1px solid #ccc;
       border-radius: 0.5rem;
+    }
+    input {
+      border: 1px solid #ccc;
     }
     button {
       background: #007bff;
       color: white;
-      padding: 0.75rem;
       border: none;
-      border-radius: 0.5rem;
-      width: 100%;
       cursor: pointer;
     }
     button:hover {
@@ -44,36 +43,45 @@
     }
     .message {
       margin-top: 1rem;
-      color: green;
+      font-weight: bold;
     }
+    .error { color: red; }
+    .success { color: green; }
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="container" id="formContainer">
     <h2>Pontaj angajat</h2>
     <p>Completează numele tău și începe programul:</p>
-    <input type="text" id="nume" placeholder="Nume" required>
-    <input type="text" id="prenume" placeholder="Prenume" required>
-    <button onclick="trimitePontaj()">📍 Trimite pontaj</button>
+    <div id="inputSection">
+      <input type="text" id="nume" placeholder="Nume" required>
+      <input type="text" id="prenume" placeholder="Prenume" required>
+      <button onclick="trimitePontaj()">📍 Trimite pontaj</button>
+    </div>
     <div class="message" id="mesaj"></div>
   </div>
 
-  <form id="form" action="https://docs.google.com/forms/d/e/1FAIpQLSc8NdMgB3Jwb_8G0kHgP6htwXkWhCblJTvzNN9UnB1tPdDCPA/formResponse" method="POST" target="_blank" style="display:none">
-    <input name="entry.1060216242" id="fNume"> <!-- Nume -->
-    <input name="entry.1189487855" id="fPrenume"> <!-- Prenume -->
-    <input name="entry.1355780328" id="fLat"> <!-- Latitudine -->
-    <input name="entry.595165469" id="fLong"> <!-- Longitudine -->
-    <input name="entry.91720413" value="Am început programul"> <!-- Marcaj -->
+  <form id="form" action="https://docs.google.com/forms/d/e/1FAIpQLSc8NdMgB3Jwb_8G0kHgP6htwXkWhCblJTvzNN9UnB1tPdDCPA/formResponse" method="POST" style="display:none">
+    <input name="entry.1060216242" id="fNume">
+    <input name="entry.1189487855" id="fPrenume">
+    <input name="entry.1355780328" id="fLat">
+    <input name="entry.595165469" id="fLong">
+    <input name="entry.91720413" value="Am început programul">
   </form>
+
+  <iframe name="hiddenFrame" style="display:none;"></iframe>
 
   <script>
     function trimitePontaj() {
       const nume = document.getElementById("nume").value;
       const prenume = document.getElementById("prenume").value;
       const mesaj = document.getElementById("mesaj");
+      const inputSection = document.getElementById("inputSection");
 
       if (!nume || !prenume) {
         mesaj.textContent = "Te rugăm să completezi toate câmpurile.";
+        mesaj.className = "message error";
+        inputSection.style.display = "none";
         return;
       }
 
@@ -86,10 +94,17 @@
         document.getElementById("fLat").value = lat;
         document.getElementById("fLong").value = lng;
 
-        document.getElementById("form").submit();
-        mesaj.textContent = "✅ Pontaj trimis cu succes!";
+        const form = document.getElementById("form");
+        form.target = "hiddenFrame";
+        form.submit();
+
+        inputSection.style.display = "none";
+        mesaj.textContent = "✅ O zi ușoară și spor la lucru!";
+        mesaj.className = "message success";
       }, () => {
+        inputSection.style.display = "none";
         mesaj.textContent = "❌ Nu s-a putut obține locația. Permite accesul la GPS.";
+        mesaj.className = "message error";
       });
     }
   </script>
