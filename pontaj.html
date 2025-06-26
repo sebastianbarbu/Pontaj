@@ -2,29 +2,96 @@
 <html lang="ro">
 <head>
   <meta charset="UTF-8">
-  <title>Pontaj cu GPS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pontaj automat cu GPS</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f4f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+    input {
+      width: 100%;
+      padding: 0.75rem;
+      margin: 0.5rem 0;
+      border: 1px solid #ccc;
+      border-radius: 0.5rem;
+    }
+    button {
+      background: #007bff;
+      color: white;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 0.5rem;
+      width: 100%;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    .message {
+      margin-top: 1rem;
+      color: green;
+    }
+  </style>
 </head>
 <body>
-  <h2>📍 Se obține locația...</h2>
-  <p>Te rugăm să permiți accesul la locație în browser.</p>
+  <div class="container">
+    <h2>Pontaj angajat</h2>
+    <p>Completează numele tău și începe programul:</p>
+    <input type="text" id="nume" placeholder="Nume" required>
+    <input type="text" id="prenume" placeholder="Prenume" required>
+    <button onclick="trimitePontaj()">📍 Trimite pontaj</button>
+    <div class="message" id="mesaj"></div>
+  </div>
+
+  <form id="form" action="https://docs.google.com/forms/d/e/1FAIpQLSc8NdMgB3Jwb_8G0kHgP6htwXkWhCblJTvzNN9UnB1tPdDCPA/formResponse" method="POST" target="_blank" style="display:none">
+    <input name="entry.1060216242" id="fNume"> <!-- Nume -->
+    <input name="entry.1189487855" id="fPrenume"> <!-- Prenume -->
+    <input name="entry.1355780328" id="fLat"> <!-- Latitudine -->
+    <input name="entry.595165469" id="fLong"> <!-- Longitudine -->
+    <input name="entry.91720413" value="Am început programul"> <!-- Marcaj -->
+  </form>
 
   <script>
-    navigator.geolocation.getCurrentPosition(
-      function(position) {
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude;
+    function trimitePontaj() {
+      const nume = document.getElementById("nume").value;
+      const prenume = document.getElementById("prenume").value;
+      const mesaj = document.getElementById("mesaj");
 
-        const formURL =
-          "https://docs.google.com/forms/d/e/1FAIpQLSc8NdMgB3Jwb_8G0kHgP6htwXkWhCblJTvzNN9UnB1tPdDCPA/viewform?usp=pp_url" +
-          "&entry.1355780328=" + encodeURIComponent(lat) +     // Latitudine
-          "&entry.595165469=" + encodeURIComponent(lng);      // Longitudine
-
-        window.location.href = formURL;
-      },
-      function(error) {
-        document.body.innerHTML = "<p style='color:red;'>❌ Nu am putut obține locația. Permite accesul la GPS.</p>";
+      if (!nume || !prenume) {
+        mesaj.textContent = "Te rugăm să completezi toate câmpurile.";
+        return;
       }
-    );
+
+      navigator.geolocation.getCurrentPosition(pos => {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+
+        document.getElementById("fNume").value = nume;
+        document.getElementById("fPrenume").value = prenume;
+        document.getElementById("fLat").value = lat;
+        document.getElementById("fLong").value = lng;
+
+        document.getElementById("form").submit();
+        mesaj.textContent = "✅ Pontaj trimis cu succes!";
+      }, () => {
+        mesaj.textContent = "❌ Nu s-a putut obține locația. Permite accesul la GPS.";
+      });
+    }
   </script>
 </body>
 </html>
