@@ -51,9 +51,9 @@
 </head>
 <body>
   <div class="container" id="formContainer">
-    <h2>Pontaj angajat</h2>
-    <p>Completează numele tău și începe programul:</p>
     <div id="inputSection">
+      <h2 id="formTitle">Pontaj angajat</h2>
+      <p id="formSubtitle">Completează numele tău și începe programul:</p>
       <input type="text" id="nume" placeholder="Nume" required>
       <input type="text" id="prenume" placeholder="Prenume" required>
       <button onclick="trimitePontaj()">📍 Trimite pontaj</button>
@@ -77,11 +77,14 @@
       const prenume = document.getElementById("prenume").value;
       const mesaj = document.getElementById("mesaj");
       const inputSection = document.getElementById("inputSection");
+      const formTitle = document.getElementById("formTitle");
+      const formSubtitle = document.getElementById("formSubtitle");
 
       if (!nume || !prenume) {
-        mesaj.textContent = "Te rugăm să completezi toate câmpurile.";
-        mesaj.className = "message error";
         inputSection.style.display = "none";
+        formTitle.textContent = "❌ Eroare";
+        formSubtitle.style.display = "none";
+        mesaj.innerHTML = "<h3 class='error'>Date incomplete. Încercați din nou.</h3>";
         return;
       }
 
@@ -99,12 +102,14 @@
         form.submit();
 
         inputSection.style.display = "none";
-        mesaj.textContent = "✅ O zi ușoară și spor la lucru!";
-        mesaj.className = "message success";
+        formTitle.textContent = "✅ Mulțumesc";
+        formSubtitle.style.display = "none";
+        mesaj.innerHTML = "<h3 class='success'>O zi ușoară.</h3>";
       }, () => {
         inputSection.style.display = "none";
-        mesaj.textContent = "❌ Nu s-a putut obține locația. Permite accesul la GPS.";
-        mesaj.className = "message error";
+        formTitle.textContent = "❌ Eroare";
+        formSubtitle.style.display = "none";
+        mesaj.innerHTML = "<h3 class='error'>Nu s-a putut obține locația. Permite accesul la GPS.</h3>";
       });
     }
   </script>
