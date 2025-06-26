@@ -41,24 +41,32 @@
     button:hover {
       background: #0056b3;
     }
-    .message {
-      margin-top: 1rem;
-      font-weight: bold;
-    }
-    .error { color: red; }
     .success { color: green; }
+    .error { color: red; }
   </style>
 </head>
 <body>
-  <div class="container" id="formContainer">
+  <div class="container">
+    <!-- Secțiunea de introducere -->
     <div id="inputSection">
-      <h2 id="formTitle">Pontaj angajat</h2>
-      <p id="formSubtitle">Completează numele tău și începe programul:</p>
+      <h2>Pontaj angajat</h2>
+      <p>Completează numele tău și începe programul:</p>
       <input type="text" id="nume" placeholder="Nume" required>
       <input type="text" id="prenume" placeholder="Prenume" required>
       <button onclick="trimitePontaj()">📍 Trimite pontaj</button>
     </div>
-    <div class="message" id="mesaj"></div>
+
+    <!-- Mulțumire -->
+    <div id="thankYouSection" style="display:none;">
+      <h2>✅ Mulțumesc</h2>
+      <p class="success">O zi ușoară.</p>
+    </div>
+
+    <!-- Eroare -->
+    <div id="errorSection" style="display:none;">
+      <h2>❌ Eroare</h2>
+      <p id="errorMessage" class="error"></p>
+    </div>
   </div>
 
   <form id="form" action="https://docs.google.com/forms/d/e/1FAIpQLSc8NdMgB3Jwb_8G0kHgP6htwXkWhCblJTvzNN9UnB1tPdDCPA/formResponse" method="POST" style="display:none">
@@ -75,16 +83,9 @@
     function trimitePontaj() {
       const nume = document.getElementById("nume").value;
       const prenume = document.getElementById("prenume").value;
-      const mesaj = document.getElementById("mesaj");
-      const inputSection = document.getElementById("inputSection");
-      const formTitle = document.getElementById("formTitle");
-      const formSubtitle = document.getElementById("formSubtitle");
 
       if (!nume || !prenume) {
-        inputSection.style.display = "none";
-        formTitle.textContent = "❌ Eroare";
-        formSubtitle.style.display = "none";
-        mesaj.innerHTML = "<h3 class='error'>Date incomplete. Încercați din nou.</h3>";
+        afiseazaEroare("Date incomplete. Încercați din nou.");
         return;
       }
 
@@ -101,16 +102,17 @@
         form.target = "hiddenFrame";
         form.submit();
 
-        inputSection.style.display = "none";
-        formTitle.textContent = "✅ Mulțumesc";
-        formSubtitle.style.display = "none";
-        mesaj.innerHTML = "<h3 class='success'>O zi ușoară.</h3>";
+        document.getElementById("inputSection").style.display = "none";
+        document.getElementById("thankYouSection").style.display = "block";
       }, () => {
-        inputSection.style.display = "none";
-        formTitle.textContent = "❌ Eroare";
-        formSubtitle.style.display = "none";
-        mesaj.innerHTML = "<h3 class='error'>Nu s-a putut obține locația. Permite accesul la GPS.</h3>";
+        afiseazaEroare("Nu s-a putut obține locația. Permite accesul la GPS.");
       });
+    }
+
+    function afiseazaEroare(mesaj) {
+      document.getElementById("inputSection").style.display = "none";
+      document.getElementById("errorMessage").textContent = mesaj;
+      document.getElementById("errorSection").style.display = "block";
     }
   </script>
 </body>
