@@ -2,11 +2,11 @@
 <html lang="ro">
 <head>
   <meta charset="UTF-8">
-  <title>Pontaj cu GPS</title>
+  <title>Pontaj GPS</title>
 </head>
 <body>
-  <h2>📍 Se obține locația...</h2>
-  <p>Te rugăm să permiți accesul la locație când apare cererea.</p>
+  <h2>📍 Se obține locația GPS...</h2>
+  <p>Te rugăm să permiți accesul la locație.</p>
 
   <script>
     navigator.geolocation.getCurrentPosition(
@@ -14,14 +14,18 @@
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
 
-        const formURL = "https://docs.google.com/forms/d/e/1FAIpQLSc8NdMgB3Jwb_8G0kHgP6htwXkWhCblJTvzNN9UnB1tPdDCPA/viewform?usp=pp_url"
-          + "&entry.1355780328=" + encodeURIComponent(lat)  // latitudine
-          + "&entry.595165469=" + encodeURIComponent(lng); // longitudine
+        const formURL =
+          "https://docs.google.com/forms/d/e/1FAIpQLSc8NdMgB3Jwb_8G0kHgP6htwXkWhCblJTvzNN9UnB1tPdDCPA/viewform?usp=pp_url" +
+          "&entry.1060216242=" + "" + // ← Nume va fi completat manual
+          "&entry.1189487855=" + "" + // ← Prenume va fi completat manual
+          "&entry.91720413=Am+%C3%AEnceput+programul" +
+          "&entry.1355780328=" + encodeURIComponent(lat) +
+          "&entry.595165469=" + encodeURIComponent(lng);
 
         window.location.href = formURL;
       },
       function(error) {
-        document.body.innerHTML = "<p style='color:red;'>❌ Nu am putut obține locația. Permite accesul la GPS din browser.</p>";
+        document.body.innerHTML = "<p style='color:red;'>⚠️ Nu am putut obține locația. Permite accesul la GPS din browser.</p>";
       }
     );
   </script>
