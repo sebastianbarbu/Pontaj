@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <title>Pontaj cu GPS</title>
+</head>
+<body>
+  <h2>📍 Se obține locația...</h2>
+  <p>Te rugăm să permiți accesul la locație când apare cererea.</p>
+
+  <script>
+    navigator.geolocation.getCurrentPosition(
+      function(position) {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+
+        const formURL =
+          "https://docs.google.com/forms/d/e/1FAIpQLSc8NdMgB3Jwb_8G0kHgP6htwXkWhCblJTvzNN9UnB1tPdDCPA/viewform?usp=pp_url" +
+          "&entry.1060216242=" + encodeURIComponent(lat) +
+          "&entry.1189487855=" + encodeURIComponent(lng);
+
+        window.location.href = formURL;
+      },
+      function(error) {
+        document.body.innerHTML = "<p style='color:red;'>❌ Nu am putut obține locația. Permite accesul la GPS din browser.</p>";
+      }
+    );
+  </script>
+</body>
+</html>
