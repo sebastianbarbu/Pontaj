@@ -102,12 +102,12 @@
         form.submit();
 
         inputSection.style.display = "none";
-        formTitle.textContent = "✅ Mulțumesc";
+        formTitle.innerHTML = "<h2 id="formTitle">✅ Mulțumesc</h2>";
         formSubtitle.style.display = "none";
         mesaj.innerHTML = "<h3 class='success'>O zi ușoară.</h3>";
       }, () => {
         inputSection.style.display = "none";
-        formTitle.textContent = "❌ Eroare";
+        formTitleinnerHTML = "<h2 id="formTitle":❌ Eroare</h2>";
         formSubtitle.style.display = "none";
         mesaj.innerHTML = "<h3 class='error'>Nu s-a putut obține locația. Permite accesul la GPS.</h3>";
       });
